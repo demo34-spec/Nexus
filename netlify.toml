@@ -1,0 +1,8 @@
+[build]
+  publish = "nexus-cyber"
+
+# Serve the dashboard page at the site root
+[[redirects]]
+  from = "/"
+  to = "/nexus-cyber.html"
+  status = 200
