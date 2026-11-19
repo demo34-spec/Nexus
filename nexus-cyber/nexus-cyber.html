@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS | Global Threat Monitor</title>
+    <link rel="stylesheet" href="nexus.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script defer src="nexusjs.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <a class="brand" href="#dashboard">
+                <span class="brand-mark">N</span>
+                <span>NEXUS<small>SECURITY OPERATIONS</small></span>
+            </a>
+
+            <div class="menu">
+                <p class="menu-title">WORKSPACE</p>
+                <a href="#world-activity" class="active" aria-current="page"><span>◈</span> Dashboard</a>
+                <a href="#network-monitor"><span>⌁</span> Network monitoring</a>
+                <a href="#alerts"><span>◎</span> Threat intelligence</a>
+                <a href="#system-status"><span>▣</span> System status</a>
+            </div>
+
+            <div class="sidebar-bottom">
+                <div class="connection-status"><span class="status-dot"></span> All systems operational</div>
+                <div class="user-card">
+                    <div class="avatar">A</div>
+                    <div><strong>Administrator</strong><small>Security analyst</small></div>
+                    <span class="user-menu">•••</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content" id="dashboard">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">THREAT INTELLIGENCE / OVERVIEW</p>
+                    <h1>Global threat monitor</h1>
+                </div>
+                <div class="topbar-right">
+                    <span class="demo-badge"><span class="status-dot"></span> SIMULATED LIVE</span>
+                    <span class="topbar-date" id="current-date">Loading time...</span>
+                </div>
+            </header>
+
+            <section class="kpi-grid" aria-label="Security summary">
+                <article class="kpi-card">
+                    <div class="kpi-label">THREATS DETECTED <span class="kpi-icon red">⌁</span></div>
+                    <strong>1,284</strong>
+                    <p><span class="trend negative">↑ 12.5%</span> vs. previous period</p>
+                </article>
+                <article class="kpi-card">
+                    <div class="kpi-label">ATTACKS BLOCKED <span class="kpi-icon cyan">⊘</span></div>
+                    <strong id="blocked-count">986</strong>
+                    <p><span class="trend positive">↑ 8.2%</span> blocked successfully</p>
+                </article>
+                <article class="kpi-card">
+                    <div class="kpi-label">ACTIVE SENSORS <span class="kpi-icon blue">◉</span></div>
+                    <strong>248</strong>
+                    <p><span class="trend positive">● Online</span> across 32 regions</p>
+                </article>
+                <article class="kpi-card">
+                    <div class="kpi-label">SYSTEM HEALTH <span class="kpi-icon purple">✳</span></div>
+                    <strong>98.9<span class="kpi-unit">%</span></strong>
+                    <p><span class="trend positive">● Healthy</span> all services available</p>
+                </article>
+            </section>
+
+            <section class="monitor-grid" aria-label="Live security monitoring">
+                <article class="panel detections-panel">
+                    <div class="panel-heading">
+                        <div><h2>Real-time threat detections</h2><p>Event volume over the last 60 minutes</p></div>
+                        <span class="panel-menu">•••</span>
+                    </div>
+                    <div class="chart-wrap detection-chart-wrap"><canvas id="threat-chart" aria-label="Simulated threat detections chart"></canvas></div>
+                    <div class="chart-legend">
+                        <span><i class="legend-line cyan-line"></i>Blocked attempts</span>
+                        <span><i class="legend-line purple-line"></i>Monitored events</span>
+                    </div>
+                </article>
+
+                <article class="panel map-panel" id="world-activity">
+                    <div class="panel-heading">
+                        <div><h2>Global security alerts</h2><p>Illustrative activity · not a real threat feed</p></div>
+                        <span class="panel-menu">•••</span>
+                    </div>
+                    <div class="map-frame">
+                        <div id="world-map" role="img" aria-label="World map showing simulated security events"></div>
+                        <span class="map-overlay-label">GLOBAL NETWORK</span>
+                    </div>
+                    <div class="map-summary">
+                        <span><i class="legend-dot blocked"></i>Blocked</span>
+                        <span><i class="legend-dot monitored"></i>Monitored</span>
+                        <strong id="map-event-count">0 events</strong>
+                    </div>
+                </article>
+
+                <article class="panel alerts-panel" id="alerts">
+                    <div class="panel-heading">
+                        <div><h2>Security alerts</h2><p>Recent simulated activity</p></div>
+                        <a class="text-link" href="#map-event-feed">View all</a>
+                    </div>
+                    <ul class="event-feed" id="map-event-feed" aria-live="polite"></ul>
+                </article>
+            </section>
+
+            <section class="lower-grid" aria-label="Network and system status">
+                <article class="panel network-panel" id="network-monitor">
+                    <div class="panel-heading">
+                        <div><h2>Network activity</h2><p>Simulated traffic · rolling 60-second view</p></div>
+                        <span class="live-label"><span class="status-dot"></span> LIVE DEMO</span>
+                    </div>
+                    <div class="chart-wrap network-chart-wrap"><canvas id="network-chart" aria-label="Simulated network activity chart"></canvas></div>
+                </article>
+
+                <article class="panel regions-panel">
+                    <div class="panel-heading">
+                        <div><h2>Top activity regions</h2><p>Sample event distribution</p></div>
+                        <span class="panel-menu">•••</span>
+                    </div>
+                    <div class="region-list">
+                        <div class="region-row"><span>North America</span><div class="region-track"><i style="width: 82%"></i></div><strong>82%</strong></div>
+                        <div class="region-row"><span>Europe</span><div class="region-track"><i style="width: 64%"></i></div><strong>64%</strong></div>
+                        <div class="region-row"><span>Asia Pacific</span><div class="region-track"><i style="width: 48%"></i></div><strong>48%</strong></div>
+                        <div class="region-row"><span>South America</span><div class="region-track"><i style="width: 29%"></i></div><strong>29%</strong></div>
+                        <div class="region-row"><span>Africa</span><div class="region-track"><i style="width: 17%"></i></div><strong>17%</strong></div>
+                    </div>
+                    <p class="disclaimer">Illustrative values for dashboard preview only.</p>
+                </article>
+
+                <article class="panel system-panel" id="system-status">
+                    <div class="panel-heading">
+                        <div><h2>System status</h2><p>Infrastructure overview</p></div>
+                        <span class="panel-menu">•••</span>
+                    </div>
+                    <div class="health-meter"><div class="health-ring"><strong>98.9<small>%</small></strong></div><span>Overall health</span></div>
+                    <ul class="system-list">
+                        <li><span><i class="health-dot"></i>Firewall</span><strong>Online</strong></li>
+                        <li><span><i class="health-dot"></i>Web gateway</span><strong>Online</strong></li>
+                        <li><span><i class="health-dot warning-dot"></i>Database</span><strong class="status-warning">Maintenance</strong></li>
+                    </ul>
+                </article>
+            </section>
+
+            <footer class="page-footer">
+                <span>NEXUS Security Operations Center</span>
+                <span>Demo dashboard · Map and metrics are simulated</span>
+            </footer>
+        </main>
+    </div>
+</body>
+</html>
